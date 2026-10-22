@@ -2,32 +2,62 @@
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>동호인 테니스 대회 통합 캘린더</title>
 <meta name="description" content="KATO·KTA·KATA 동호인 테니스 대회의 부서별 일정, 접수 오픈·마감 시각, 장소를 한눈에.">
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
 :root{--font-anthropic-sans:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;--font-anthropic-serif:Pretendard,Georgia,serif;
 --color-fg:#1f1e1d;--color-fg-muted:#6b6a66;--color-bg:#ffffff;--color-panel:#f7f6f3;--color-border-line:#e4e2dc;
---color-ok:#1f7a4a;--color-warn:#a5620c;--color-bad:#b3261e;
+--color-ok:#1f7a4a;--color-warn:#b8650a;--color-bad:#c0261c;
 --cds-font-size-caption:12.5px;--cds-font-size-body:14.5px;--cds-font-size-heading:16px;--cds-font-size-title:28px;--cds-font-weight-medium:600;
---cds-gap-xs:4px;--cds-gap-sm:8px;--cds-gap-md:14px;--cds-gap-lg:22px;--cds-pad-md:12px;--cds-pad-lg:18px;--cds-radius:10px;
+--cds-gap-xs:4px;--cds-gap-sm:8px;--cds-gap-md:14px;--cds-gap-lg:22px;--cds-pad-md:12px;--cds-pad-lg:18px;--cds-radius:10px;--cds-ease-out:cubic-bezier(.2,.7,.2,1);
 --c1:#2f6fd6;--c2:#d1661f;--c3:#8a4fc4}
 @media (prefers-color-scheme:dark){:root{--color-fg:#eceae4;--color-fg-muted:#a3a19b;--color-bg:#1b1b1a;--color-panel:#242423;--color-border-line:#3a3936;
---color-ok:#5cc28a;--color-warn:#e3a54a;--color-bad:#f07a70;--c1:#6fa0f0;--c2:#f0955a;--c3:#b88ae8}}
+--color-ok:#4fbf82;--color-warn:#e8a54a;--color-bad:#f0766b;--c1:#6fa0f0;--c2:#f0955a;--c3:#b88ae8}}
 html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
 #dash-root{padding:24px 16px 48px}
 .dash-skeleton{color:transparent;background:var(--color-border-line);border-radius:6px;min-width:3rem;display:inline-block}
 .tc-foot{max-width:1280px;margin:24px auto 0;font-size:12px;color:var(--color-fg-muted);font-family:var(--font-anthropic-sans)}
 
-.tc{font-family:var(--font-anthropic-sans);display:flex;flex-direction:column;gap:var(--cds-gap-lg);max-width:1280px;margin-inline:auto}
+.tc{font-family:var(--font-anthropic-sans);display:flex;flex-direction:column;gap:var(--cds-gap-lg);max-width:1280px;margin-inline:auto;
+  --hl-open:color-mix(in srgb,var(--color-ok) 10%,transparent);--hl-soon:color-mix(in srgb,var(--color-warn) 13%,transparent);--hl-close:color-mix(in srgb,var(--color-bad) 10%,transparent)}
 .tc h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0}
 .tc-take{color:var(--color-fg-muted);margin:var(--cds-gap-xs) 0 0;font-size:var(--cds-font-size-body)}
 .tc-card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);min-width:0}
-.tc-card h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0}
+.tc-card h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0;display:flex;align-items:center;gap:8px}
 .tc-note{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin:var(--cds-gap-xs) 0 var(--cds-gap-md)}
 .tc-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr));gap:var(--cds-gap-md)}
 .tc-kpi .lab{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
 .tc-kpi .val{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);font-variant-numeric:tabular-nums;margin-top:var(--cds-gap-xs);min-height:1.2em}
 .tc-kpi .sub{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-top:var(--cds-gap-xs)}
+.tc-kpi.k-open{background:var(--hl-open);border-color:color-mix(in srgb,var(--color-ok) 45%,transparent)}
+.tc-kpi.k-open .val{color:var(--color-ok)}
+.tc-kpi.k-soon{background:var(--hl-soon);border-color:color-mix(in srgb,var(--color-warn) 45%,transparent)}
+.tc-kpi.k-soon .val{color:var(--color-warn)}
+.tc-kpi.k-close{background:var(--hl-close);border-color:color-mix(in srgb,var(--color-bad) 40%,transparent)}
+.tc-kpi.k-close .val{color:var(--color-bad)}
+
+/* spotlight */
+.tc-spot{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:var(--cds-gap-md);align-items:start}
+.sp-card h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0;display:flex;align-items:center;gap:8px}
+.sp-card{border-radius:var(--cds-radius);padding:var(--cds-pad-lg);border:1px solid var(--color-border-line);min-width:0}
+.sp-card.soon{background:var(--hl-soon);border-color:color-mix(in srgb,var(--color-warn) 50%,transparent);border-top:4px solid var(--color-warn)}
+.sp-card.open{background:var(--hl-open);border-color:color-mix(in srgb,var(--color-ok) 50%,transparent);border-top:4px solid var(--color-ok)}
+.sp-list{display:flex;flex-direction:column;gap:var(--cds-gap-sm);min-height:90px}
+.sp-item{background:var(--color-bg);border:1px solid var(--color-border-line);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:7.4rem minmax(0,1fr);gap:var(--cds-gap-md);align-items:start}
+.sp-when{font-variant-numeric:tabular-nums;line-height:1.25}
+.sp-when .cd{display:inline-block;font-weight:700;font-size:var(--cds-font-size-body);padding:2px 8px;border-radius:999px;color:var(--color-bg);white-space:nowrap}
+.soon .sp-when .cd{background:var(--color-warn)}
+.open .sp-when .cd{background:var(--color-ok)}
+.sp-when .cd.hot{background:var(--color-bad)}
+.sp-when .at{display:block;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-top:4px}
+.sp-name{font-weight:var(--cds-font-weight-medium);color:var(--color-fg);text-decoration:none;font-size:var(--cds-font-size-body)}
+.sp-name:hover{text-decoration:underline}
+.sp-sub{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-top:3px;overflow-wrap:anywhere}
+.sp-more{margin-top:var(--cds-gap-sm)}
+.tc-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.tc-dot.pulse{background:var(--color-bad)}
+@media (prefers-reduced-motion:no-preference){.tc-dot.pulse,.cd.hot{animation:tcpulse 1.6s var(--cds-ease-out) infinite}}
+@keyframes tcpulse{0%,100%{opacity:1}50%{opacity:.45}}
+
 .tc-grid2{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:var(--cds-gap-md);align-items:start}
 @media (max-width:900px){.tc-grid2{grid-template-columns:1fr}}
 .tc-mx{width:100%;border-collapse:collapse;font-size:var(--cds-font-size-caption);font-variant-numeric:tabular-nums}
@@ -38,35 +68,60 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
 .tc-mx tr[data-key]:hover td{background:var(--color-bg)}
 .tc-mx tr.on td{background:var(--color-bg);font-weight:var(--cds-font-weight-medium)}
 .tc-mx td.g{color:var(--color-fg-muted)}
-.tc-mx td.open{color:var(--color-ok)}
-.tc-mx td.soon{color:var(--color-warn)}
+.tc-mx td.open{color:var(--color-ok);font-weight:var(--cds-font-weight-medium)}
+.tc-mx td.soon{color:var(--color-warn);font-weight:var(--cds-font-weight-medium)}
 .tc-bar{display:flex;flex-wrap:wrap;gap:var(--cds-gap-sm);align-items:center}
 .tc-chip{border:1px solid var(--color-border-line);background:var(--color-bg);color:var(--color-fg);border-radius:999px;padding:4px 12px;font:inherit;font-size:var(--cds-font-size-caption);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .tc-chip[aria-pressed=true]{background:var(--color-fg);color:var(--color-bg);border-color:var(--color-fg)}
+.tc-chip.q-open[aria-pressed=true]{background:var(--color-ok);border-color:var(--color-ok)}
+.tc-chip.q-soon[aria-pressed=true]{background:var(--color-warn);border-color:var(--color-warn)}
+.tc-chip.q-hot[aria-pressed=true]{background:var(--color-bad);border-color:var(--color-bad)}
 .tc-sw{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
 .tc-lab{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);min-width:3.2rem}
 .tc-in{border:1px solid var(--color-border-line);background:var(--color-bg);color:var(--color-fg);border-radius:var(--cds-radius);padding:6px 10px;font:inherit;font-size:var(--cds-font-size-caption)}
 .tc-search{flex:1 1 12rem;min-width:0}
 .tc-filters{display:flex;flex-direction:column;gap:var(--cds-gap-sm);margin-bottom:var(--cds-gap-md)}
+.tc-legend{display:flex;flex-wrap:wrap;gap:var(--cds-gap-md);font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-bottom:var(--cds-gap-sm);align-items:center}
+.tc-legend span{display:inline-flex;align-items:center;gap:6px}
+.tc-legend i{width:14px;height:14px;border-radius:3px;display:inline-block}
 .tc-count{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-bottom:var(--cds-gap-sm)}
-.tc-tw{overflow:auto;max-height:70vh;border:1px solid var(--color-border-line);border-radius:var(--cds-radius);background:var(--color-bg);min-height:160px}
-.tc-t{width:100%;border-collapse:collapse;font-size:var(--cds-font-size-caption);min-width:960px}
+.tc-tw{overflow:auto;max-height:72vh;border:1px solid var(--color-border-line);border-radius:var(--cds-radius);background:var(--color-bg);min-height:160px}
+.tc-t{width:100%;border-collapse:collapse;font-size:var(--cds-font-size-caption);min-width:980px}
 .tc-t th{position:sticky;top:0;background:var(--color-panel);text-align:left;font-weight:var(--cds-font-weight-medium);color:var(--color-fg-muted);padding:8px;border-bottom:1px solid var(--color-border-line);white-space:nowrap;z-index:1}
 .tc-t th button{all:unset;cursor:pointer}
-.tc-t th button:hover{color:var(--color-fg)}
+.tc-t th button:hover,.tc-t th button[aria-pressed=true]{color:var(--color-fg)}
 .tc-t td{padding:8px;border-bottom:1px solid var(--color-border-line);vertical-align:top;font-variant-numeric:tabular-nums}
 .tc-t tr.newt td{border-top:2px solid var(--color-border-line)}
+.tc-t tr.hl-open td{background:var(--hl-open)}
+.tc-t tr.hl-open td:first-child{box-shadow:inset 4px 0 0 var(--color-ok)}
+.tc-t tr.hl-close td{background:var(--hl-open)}
+.tc-t tr.hl-close td:first-child{box-shadow:inset 4px 0 0 var(--color-bad)}
+.tc-t tr.hl-soon td{background:var(--hl-soon)}
+.tc-t tr.hl-soon td:first-child{box-shadow:inset 4px 0 0 var(--color-warn)}
+.tc-t tr.dim td{color:var(--color-fg-muted)}
+.tc-t tr.dim .tn,.tc-t tr.dim .big{color:var(--color-fg-muted)}
 .tc-t .tn{font-weight:var(--cds-font-weight-medium);color:var(--color-fg);text-decoration:none}
 .tc-t .tn:hover{text-decoration:underline}
 .tc-t .mu{color:var(--color-fg-muted);margin-top:2px}
 .tc-t .big{font-size:var(--cds-font-size-body);color:var(--color-fg)}
+.tc-t td.c-reg .big{font-weight:var(--cds-font-weight-medium)}
+.tc-t tr.hl-open td.c-reg .big,.tc-t tr.hl-close td.c-reg .big{color:var(--color-ok)}
+.tc-t tr.hl-soon td.c-reg .big{color:var(--color-warn)}
+.tc-t .cdn{display:inline-block;margin-top:4px;font-weight:700;font-size:11.5px;padding:1px 8px;border-radius:999px;color:var(--color-bg);white-space:nowrap}
+.cdn.c-soon{background:var(--color-warn)}.cdn.c-hot{background:var(--color-bad)}.cdn.c-close{background:var(--color-bad)}
 .tc-b{display:inline-block;font-size:11px;padding:1px 8px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.tc-b.solid{color:var(--color-bg);border-color:transparent;font-weight:700}
+.tc-b.solid.st-open{background:var(--color-ok)}
+.tc-b.solid.st-soon{background:var(--color-warn)}
+.tc-b.solid.st-close{background:var(--color-bad)}
 .st-open{color:var(--color-ok)}.st-soon{color:var(--color-warn)}.st-closed,.st-tbd{color:var(--color-fg-muted)}.st-day{color:var(--color-bad)}
 .tc-g{display:inline-block;font-size:11px;padding:1px 6px;border-radius:4px;background:var(--color-panel);border:1px solid var(--color-border-line);color:var(--color-fg-muted);margin-top:3px}
 .tc-empty{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);padding:var(--cds-pad-md)}
 .tc-tl{display:flex;flex-direction:column;min-height:120px;max-height:560px;overflow:auto}
 .tc-tl .day{font-size:var(--cds-font-size-caption);font-weight:var(--cds-font-weight-medium);color:var(--color-fg);padding:10px 0 4px;border-bottom:1px solid var(--color-border-line)}
-.tc-tl .ev{display:grid;grid-template-columns:3.4rem 3.6rem minmax(0,1fr);gap:var(--cds-gap-sm);font-size:var(--cds-font-size-caption);padding:6px 0;border-bottom:1px solid var(--color-border-line);align-items:baseline}
+.tc-tl .ev{display:grid;grid-template-columns:3.4rem 3.6rem minmax(0,1fr);gap:var(--cds-gap-sm);font-size:var(--cds-font-size-caption);padding:6px 4px;border-bottom:1px solid var(--color-border-line);align-items:baseline}
+.tc-tl .ev.hot.o{background:var(--hl-soon)}
+.tc-tl .ev.hot.c{background:var(--hl-close)}
 .tc-tl .tm{font-variant-numeric:tabular-nums;color:var(--color-fg)}
 .tc-tl .k.open{color:var(--color-ok)}.tc-tl .k.close{color:var(--color-bad)}
 .tc-tl .who{overflow-wrap:anywhere}
@@ -83,16 +138,29 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
   </header>
 
   <section class="tc-kpis" id="kpis">
-    <div class="tc-card tc-kpi"><div class="lab">지금 접수 중인 부서</div><div class="val dash-skeleton" data-source="kpis" data-field="open">—</div><div class="sub">KATO는 선착순이라 정원이 찼을 수 있음</div></div>
-    <div class="tc-card tc-kpi"><div class="lab">7일 내 접수 오픈</div><div class="val dash-skeleton" data-source="kpis" data-field="opening7">—</div><div class="sub">오픈 시각이 공지된 부서</div></div>
-    <div class="tc-card tc-kpi"><div class="lab">7일 내 접수 마감</div><div class="val dash-skeleton" data-source="kpis" data-field="closing7">—</div><div class="sub">마감 일시가 정해진 KTA 부서</div></div>
+    <div class="tc-card tc-kpi k-open"><div class="lab">지금 접수 중인 부서</div><div class="val dash-skeleton" data-source="kpis" data-field="open">—</div><div class="sub">KATO는 선착순이라 정원이 찼을 수 있음</div></div>
+    <div class="tc-card tc-kpi k-soon"><div class="lab">7일 내 접수 오픈</div><div class="val dash-skeleton" data-source="kpis" data-field="opening7">—</div><div class="sub">오픈 시각이 공지된 부서</div></div>
+    <div class="tc-card tc-kpi k-close"><div class="lab">3일 내 접수 마감</div><div class="val dash-skeleton" data-source="kpis" data-field="closing3">—</div><div class="sub">마감 일시가 정해진 KTA 부서</div></div>
     <div class="tc-card tc-kpi"><div class="lab">남자부 · 여자부 예정</div><div class="val dash-skeleton" id="mf">—</div><div class="sub">오늘 이후 경기 · 혼합 <span data-source="kpis" data-field="mixed">—</span>개 별도</div></div>
+  </section>
+
+  <section class="tc-spot" id="spotlight">
+    <div class="sp-card soon" id="spot-soon">
+      <h2><span class="tc-dot pulse" aria-hidden="true"></span>곧 접수 오픈 · 7일 이내</h2>
+      <p class="tc-note">알람 맞춰둘 대회입니다. 빨간 표시는 24시간 안에 열립니다.</p>
+      <div class="sp-list" id="sp-soon" data-source="divisions"></div>
+    </div>
+    <div class="sp-card open" id="spot-open">
+      <h2><span class="tc-dot" style="background:var(--color-ok)" aria-hidden="true"></span>지금 접수 중 · 마감 임박 순</h2>
+      <p class="tc-note">마감이 3일 안에 오는 대회는 빨간색으로 표시합니다.</p>
+      <div class="sp-list" id="sp-open" data-source="divisions"></div>
+    </div>
   </section>
 
   <div class="tc-grid2">
     <section class="tc-card" id="categories">
       <h2>카테고리별 부서</h2>
-      <p class="tc-note">오늘 이후 열리는 부서 수입니다. 행을 누르면 아래 목록이 그 카테고리로 걸러집니다.</p>
+      <p class="tc-note">오늘 이후 열리는 부서 수입니다. 행을 누르면 아래 목록과 위 주목 카드가 그 카테고리로 걸러집니다.</p>
       <table class="tc-mx" id="mx" data-source="by_level" data-row-key="level">
         <thead><tr><th data-field="gender">구분</th><th data-field="level">세부 카테고리</th><th class="n" data-field="upcoming">예정</th><th class="n" data-field="open">접수 중</th><th class="n" data-field="soon">접수 예정</th></tr></thead>
         <tbody></tbody>
@@ -102,7 +170,7 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
 
     <aside class="tc-card" id="timeline">
       <h2>접수 알람 타임라인 · 14일</h2>
-      <p class="tc-note">접수가 열리고 닫히는 시각을 대회별로 묶었습니다. 위 필터가 그대로 적용됩니다.</p>
+      <p class="tc-note">접수가 열리고 닫히는 시각을 대회별로 묶었습니다. 24시간 안의 일정은 색으로 강조합니다.</p>
       <div class="tc-tl" id="tl" data-source="divisions"></div>
     </aside>
   </div>
@@ -111,16 +179,19 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     <h2>부서별 대회 목록</h2>
     <p class="tc-note">대회명을 누르면 원문 요강·신청 페이지로 이동합니다.</p>
     <div class="tc-filters">
+      <div class="tc-bar"><span class="tc-lab">빠른 보기</span><span id="f-quick" class="tc-bar"></span></div>
       <div class="tc-bar"><span class="tc-lab">단체</span><span id="f-org" class="tc-bar"></span></div>
       <div class="tc-bar"><span class="tc-lab">구분</span><span id="f-gender" class="tc-bar"></span></div>
       <div class="tc-bar"><span class="tc-lab">세부</span><span id="f-level" class="tc-bar"></span></div>
-      <div class="tc-bar"><span class="tc-lab">상태</span>
-        <select class="tc-in" id="f-st" aria-label="상태">
-          <option value="active">종료 제외 전체</option><option value="접수 중">접수 중</option><option value="접수 예정">접수 예정</option>
-          <option value="오픈 미정">오픈 미정</option><option value="접수 마감">접수 마감</option><option value="all">종료 포함 전체</option>
-        </select>
+      <div class="tc-bar"><span class="tc-lab">검색</span>
         <input class="tc-in tc-search" id="f-q" type="search" placeholder="대회·지역·장소 검색 (예: 수원, 송도)" aria-label="검색">
       </div>
+    </div>
+    <div class="tc-legend">
+      <span><i style="background:var(--color-ok)"></i>접수 중</span>
+      <span><i style="background:var(--color-bad)"></i>마감 3일 이내 · 오픈 24시간 이내</span>
+      <span><i style="background:var(--color-warn)"></i>오픈 7일 이내</span>
+      <span><i style="background:var(--color-border-line)"></i>그 외</span>
     </div>
     <div class="tc-count" id="cnt">—</div>
     <div class="tc-tw" data-source="divisions">
@@ -166,7 +237,6 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     run();
   }).catch(()=>{sources.divisions={status:'error',data:[]};run();});
   let w=innerWidth;addEventListener('resize',()=>{if(Math.abs(innerWidth-w)>40){w=innerWidth;run();}});
-  setInterval(run,60000);
 })();
 </script>
 <script>
@@ -174,28 +244,42 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
   const ORGS=['KATO','KTA','KATA'];
   const GENDERS=['남자부','여자부','혼합·기타'];
   const LEVELS={'남자부':['오픈급(오픈·마스터스)','신인급(신인·챌린저)','베테랑','지도자','입문·지역'],'여자부':['국화(오픈급)','개나리(신인급)','입문·지역'],'혼합·기타':['혼합복식','비랭킹','지역신인(요강 확인)']};
+  const SOON_H=24*7, HOT_H=24, CLOSE_H=72;
   const col=(o)=>dash.colors[Math.max(0,ORGS.indexOf(o))];
   const DOW=['일','월','화','수','목','금','토'];
   const nowKST=()=>{const s=new Date().toLocaleString('sv-SE',{timeZone:'Asia/Seoul'});return s.slice(0,16).replace(' ','T');};
+  const ms=(s)=>Date.parse(s+':00+09:00');
+  const hoursUntil=(now,when)=>(ms(when)-ms(now))/3600000;
   const md=(s)=>{if(!s)return'';const d=new Date(s.slice(0,10)+'T00:00:00Z');return (d.getUTCMonth()+1)+'/'+d.getUTCDate()+'('+DOW[d.getUTCDay()]+')';};
   const addDays=(s,n)=>{const d=new Date(s+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);};
+  const dayGap=(a,b)=>Math.round((Date.parse(b.slice(0,10)+'T00:00:00Z')-Date.parse(a.slice(0,10)+'T00:00:00Z'))/86400000);
+  // "D-3", "내일", "5시간 후", "40분 후"
+  const countdown=(now,when)=>{const h=hoursUntil(now,when);if(h<=0)return'지금';
+    if(h<1)return Math.max(1,Math.round(h*60))+'분 후';
+    if(h<HOT_H)return Math.floor(h)+'시간 '+Math.round((h%1)*60)+'분 후';
+    const g=dayGap(now,when);return g===1?'내일':'D-'+g;};
+  const short=(now,when)=>{const h=hoursUntil(now,when);if(h<=0)return'지금';if(h<1)return Math.max(1,Math.round(h*60))+'분 후';if(h<HOT_H)return Math.floor(h)+'시간 후';return countdown(now,when);};
   const stOf=(r,now)=>{const t=now.slice(0,10);
     if(r.date&&r.date<t)return'종료'; if(r.date===t)return'경기일';
     if(r.open_now)return'접수 중'; if(!r.reg_open)return'오픈 미정';
     if(now<r.reg_open)return'접수 예정'; if(r.reg_close&&now>r.reg_close)return'접수 마감'; return'접수 중';};
+  // urgency: close (open & closing ≤3d), open, hot (opens ≤24h), soon (opens ≤7d), ''
+  const urg=(r,now)=>{const s=stOf(r,now);
+    if(s==='접수 중')return (r.reg_close&&hoursUntil(now,r.reg_close)<=CLOSE_H)?'close':'open';
+    if(s==='접수 예정'){const h=hoursUntil(now,r.reg_open);if(h<=HOT_H)return'hot';if(h<=SOON_H)return'soon';}
+    return'';};
   const stCls={'접수 중':'st-open','접수 예정':'st-soon','접수 마감':'st-closed','오픈 미정':'st-tbd','경기일':'st-day','종료':'st-closed'};
 
-  const ST_FN=(r,now)=>{const t=now.slice(0,10);if(r.date&&r.date<t)return'종료';if(r.date===t)return'경기일';if(r.open_now)return'접수 중';if(!r.reg_open)return'오픈 미정';if(now<r.reg_open)return'접수 예정';if(r.reg_close&&now>r.reg_close)return'접수 마감';return'접수 중';};
-
-  dash.calc('kpis',{title:'접수 현황 요약',description:'한국시간 현재 시각 기준으로 부서별 접수 상태를 세고, 7일 안에 접수가 열리거나 닫히는 부서를 셉니다.',inputs:['divisions'],fn:(divisions)=>{
+  dash.calc('kpis',{title:'접수 현황 요약',description:'한국시간 현재 시각 기준으로 접수 중인 부서, 7일 안에 접수가 열리는 부서, 3일 안에 접수가 닫히는 부서를 셉니다.',inputs:['divisions'],fn:(divisions)=>{
     const now=new Date().toLocaleString('sv-SE',{timeZone:'Asia/Seoul'}).slice(0,16).replace(' ','T');const t=now.slice(0,10);
-    const d=new Date(t+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+7);const t7=d.toISOString().slice(0,10)+'T23:59';
+    const plus=(n)=>new Date(Date.parse(now+':00+09:00')+n*86400000).toLocaleString('sv-SE',{timeZone:'Asia/Seoul'}).slice(0,16).replace(' ','T');
+    const t7=plus(7),t3=plus(3);
     const st=(r)=>r.date&&r.date<t?'종료':r.date===t?'경기일':r.open_now?'접수 중':!r.reg_open?'오픈 미정':now<r.reg_open?'접수 예정':(r.reg_close&&now>r.reg_close)?'접수 마감':'접수 중';
     const up=divisions.filter(r=>r.date>=t);
     const next=divisions.filter(r=>r.reg_open&&r.reg_open>now).sort((a,b)=>a.reg_open.localeCompare(b.reg_open))[0];
     return [{open:divisions.filter(r=>st(r)==='접수 중').length,
       opening7:divisions.filter(r=>r.reg_open&&r.reg_open>now&&r.reg_open<=t7).length,
-      closing7:divisions.filter(r=>r.reg_close&&r.reg_close>now&&r.reg_close<=t7).length,
+      closing3:divisions.filter(r=>st(r)==='접수 중'&&r.reg_close&&r.reg_close<=t3).length,
       male:up.filter(r=>r.gender==='남자부').length,female:up.filter(r=>r.gender==='여자부').length,mixed:up.filter(r=>r.gender==='혼합·기타').length,
       next_when:next?next.reg_open:'',next_what:next?next.org+' '+next.tournament+' '+next.division:''}];
   }});
@@ -207,54 +291,100 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     return [...m.values()].sort((a,b)=>order.indexOf(a.gender)-order.indexOf(b.gender)||b.upcoming-a.upcoming);
   }});
 
-  let org='all',gender='all',level='all',stf='active',q='',sortKey='date';
+  let org='all',gender='all',level='all',quick='active',q='',sortKey='date';
+  const QUICK=[['active','종료 제외 전체',''],['hot','🔥 접수 중 + 오픈 임박','q-hot'],['open','접수 중','q-open'],['soon','오픈 7일 이내','q-soon'],['later','접수 예정·미정',''],['all','종료 포함 전체','']];
   const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
-  const chip=(label,on,fn,color)=>{const b=el('button','tc-chip');if(color){const s=el('span','tc-sw');s.style.background=color;b.append(s);}b.append(label);b.setAttribute('aria-pressed',on);b.addEventListener('click',fn);return b;};
+  const chip=(label,on,fn,color,cls)=>{const b=el('button','tc-chip'+(cls?' '+cls:''));if(color){const s=el('span','tc-sw');s.style.background=color;b.append(s);}b.append(label);b.setAttribute('aria-pressed',on);b.addEventListener('click',fn);return b;};
 
   function drawFilters(){
+    document.getElementById('f-quick').replaceChildren(...QUICK.map(([v,l,c])=>chip(l,quick===v,()=>{quick=v;if(v==='hot'||v==='soon')sortKey='reg_open';draw();},null,c)));
     document.getElementById('f-org').replaceChildren(chip('전체',org==='all',()=>{org='all';draw();}),...ORGS.map(o=>chip(o,org===o,()=>{org=o;draw();},col(o))));
     document.getElementById('f-gender').replaceChildren(chip('전체',gender==='all',()=>{gender='all';level='all';draw();}),...GENDERS.map(g=>chip(g,gender===g,()=>{gender=g;level='all';draw();})));
     const lv=gender==='all'?[]:LEVELS[gender];
     const box=document.getElementById('f-level');
     if(!lv.length){box.replaceChildren(el('span','tc-lab','구분을 고르면 세부 카테고리가 나옵니다'));}
     else box.replaceChildren(chip('전체',level==='all',()=>{level='all';draw();}),...lv.map(l=>chip(l,level===l,()=>{level=l;draw();})));
+    document.querySelectorAll('#tbl th button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.sort===sortKey));
   }
-  document.getElementById('f-st').addEventListener('change',e=>{stf=e.target.value;draw();});
   document.getElementById('f-q').addEventListener('input',e=>{q=e.target.value.trim();draw();});
   document.querySelectorAll('#tbl th button').forEach(b=>b.addEventListener('click',()=>{sortKey=b.dataset.sort;draw();}));
   document.querySelector('#mx tbody').addEventListener('click',e=>{const tr=e.target.closest('tr[data-key]');if(!tr)return;
     if(level===tr.dataset.key){level='all';}else{gender=tr.dataset.gender;level=tr.dataset.key;}draw();document.getElementById('list').scrollIntoView({behavior:'smooth',block:'start'});dash.setLink('list');});
 
-  function pass(r,now,useStatus){
+  function passBase(r){
     if(org!=='all'&&r.org!==org)return false;
     if(gender!=='all'&&r.gender!==gender)return false;
     if(level!=='all'&&r.level!==level)return false;
     if(q&&![r.tournament,r.division,r.region,r.venue,r.org].join(' ').includes(q))return false;
-    if(useStatus){const s=stOf(r,now);if(stf==='active'&&s==='종료')return false;if(stf!=='active'&&stf!=='all'&&s!==stf)return false;}
     return true;
+  }
+  function passQuick(r,now){const s=stOf(r,now),u=urg(r,now);
+    switch(quick){case'all':return true;case'active':return s!=='종료';
+      case'hot':return u==='open'||u==='close'||u==='hot'||u==='soon';case'open':return s==='접수 중';
+      case'soon':return u==='hot'||u==='soon';case'later':return s==='접수 예정'||s==='오픈 미정';}return true;}
+
+  function drawSpot(rows,now){
+    const soon=new Map(),open=new Map();
+    rows.forEach(r=>{const u=urg(r,now);
+      if(u==='hot'||u==='soon'){const k=r.tid+'|'+r.reg_open;if(!soon.has(k))soon.set(k,{r,when:r.reg_open,divs:[],hot:u==='hot'});soon.get(k).divs.push(r.division);}
+      if(u==='open'||u==='close'){if(!open.has(r.tid))open.set(r.tid,{r,divs:[],close:'',closing:false,first:r.date});const o=open.get(r.tid);o.divs.push(r.division);
+        if(r.reg_close&&(!o.close||r.reg_close<o.close))o.close=r.reg_close;if(u==='close')o.closing=true;if(r.date<o.first)o.first=r.date;}
+    });
+    const sl=[...soon.values()].sort((a,b)=>a.when.localeCompare(b.when));
+    const boxS=document.getElementById('sp-soon');
+    if(!sl.length)boxS.replaceChildren(el('div','tc-empty','7일 안에 열리는 접수가 없습니다. 다음 오픈은 위 요약 문장을 확인하세요.'));
+    else boxS.replaceChildren(...sl.map(e=>{const it=el('div','sp-item');
+      const w=el('div','sp-when');w.append(el('span','cd'+(e.hot?' hot':''),short(now,e.when)),el('span','at',md(e.when)+' '+e.when.slice(11)));
+      const b=el('div');const sw=el('span','tc-sw');sw.style.background=col(e.r.org);sw.style.marginRight='6px';
+      const a=el('a','sp-name',e.r.org+' '+e.r.tournament);a.href=e.r.url;a.target='_blank';a.rel='noopener';
+      b.append(sw,a,el('div','sp-sub',e.divs.join(', ')+' · '+e.r.region),el('div','sp-sub','신청: '+e.r.apply));
+      it.append(w,b);return it;}));
+    const ol=[...open.values()].sort((a,b)=>(b.closing-a.closing)||((a.close||'9')+a.first).localeCompare((b.close||'9')+b.first));
+    const boxO=document.getElementById('sp-open');const LIM=8;
+    if(!ol.length){boxO.replaceChildren(el('div','tc-empty','지금 접수 중인 대회가 없습니다.'));return;}
+    const items=ol.slice(0,LIM).map(e=>{const it=el('div','sp-item');const w=el('div','sp-when');
+      if(e.close){w.append(el('span','cd'+(e.closing?' hot':''),'마감 '+short(now,e.close)),el('span','at',md(e.close)+(e.close.slice(11)==='23:59'?'':' '+e.close.slice(11))));}
+      else w.append(el('span','cd',e.r.org==='KATO'?'선착순':'접수 중'),el('span','at',e.r.org==='KATO'?'정원 차면 마감':'마감은 앱 확인'));
+      const b=el('div');const sw=el('span','tc-sw');sw.style.background=col(e.r.org);sw.style.marginRight='6px';
+      const a=el('a','sp-name',e.r.org+' '+e.r.tournament);a.href=e.r.url;a.target='_blank';a.rel='noopener';
+      b.append(sw,a,el('div','sp-sub',e.divs.join(', ')),el('div','sp-sub','경기 '+md(e.first)+'~ · '+e.r.region+' · '+e.r.apply));
+      it.append(w,b);return it;});
+    if(ol.length>LIM){const more=el('button','tc-chip sp-more','외 '+(ol.length-LIM)+'개 대회 더 보기 → 목록');
+      more.addEventListener('click',()=>{quick='open';draw();document.getElementById('list').scrollIntoView({behavior:'smooth',block:'start'});dash.setLink('list');});items.push(more);}
+    boxO.replaceChildren(...items);
   }
 
   function drawTable(rows,now){
     const tb=document.querySelector('#tbl tbody');
     document.getElementById('cnt').textContent=rows.length+'개 부서 · '+new Set(rows.map(r=>r.tid)).size+'개 대회';
     if(!rows.length){const tr=el('tr');const td=el('td','tc-empty','조건에 맞는 부서가 없습니다.');td.colSpan=8;tr.append(td);tb.replaceChildren(tr);return;}
-    const key=(r)=>sortKey==='reg_open'?(r.open_now?'0':(r.reg_open||'9999'))+r.date:r.date+(r.time||'')+r.tid;
+    const rank={close:0,hot:1,open:2,soon:3,'':4};
+    const key=(r)=>sortKey==='reg_open'?rank[urg(r,now)]+'|'+(r.open_now?'0':(r.reg_open||'9999'))+r.date:r.date+(r.time||'')+r.tid;
     rows=rows.slice().sort((a,b)=>key(a).localeCompare(key(b))||a.division.localeCompare(b.division));
     let prev='';
     tb.replaceChildren(...rows.map(r=>{
-      const s=stOf(r,now);const tr=el('tr');tr.dataset.key=r.id;if(sortKey==='date'&&prev&&prev!==r.tid)tr.className='newt';prev=r.tid;
-      const c1=el('td');c1.append(el('span','tc-b '+stCls[s],s));
-      const c2=el('td');c2.append(el('div','big',md(r.date)+(r.date_approx?' 경':'')),el('div','mu',r.date_approx?'최종일 · 부서별 미정':(r.time?r.time+' 시작':'')));
-      if(r.date_approx)c2.firstChild.textContent=md(r.date)+'*';
+      const s=stOf(r,now),u=urg(r,now);const tr=el('tr');tr.dataset.key=r.id;
+      const cls=[];if(sortKey==='date'&&prev&&prev!==r.tid)cls.push('newt');prev=r.tid;
+      if(u==='open')cls.push('hl-open');if(u==='close')cls.push('hl-close');if(u==='hot'||u==='soon')cls.push('hl-soon');
+      if(s==='접수 마감'||s==='종료')cls.push('dim');tr.className=cls.join(' ');
+      const c1=el('td');
+      if(u==='close')c1.append(el('span','tc-b solid st-close','마감 임박'));
+      else if(u==='open')c1.append(el('span','tc-b solid st-open','접수 중'));
+      else if(u==='hot')c1.append(el('span','tc-b solid st-close','오픈 임박'));
+      else if(u==='soon')c1.append(el('span','tc-b solid st-soon','오픈 임박'));
+      else c1.append(el('span','tc-b '+stCls[s],s));
+      const c2=el('td');c2.append(el('div','big',md(r.date)+(r.date_approx?'*':'')),el('div','mu',r.date_approx?'최종일 · 부서별 미정':(r.time?r.time+' 시작':'')));
       const c3=el('td');const ob=el('span','tc-b',r.org);ob.style.color=col(r.org);ob.style.marginRight='6px';
       const a=el('a','tn',r.tournament);a.href=r.url;a.target='_blank';a.rel='noopener';
       const top=el('div');top.append(ob,a);c3.append(top,el('div','mu',r.region));if(r.note)c3.append(el('div','mu','※ '+r.note));
       const c4=el('td');c4.append(el('div','big',r.division),el('span','tc-g',r.gender+' · '+r.level));if(r.teams!=='')c4.append(el('div','mu','모집 '+r.teams+'팀'));
       const c5=el('td',null,r.venue||'—');
-      const c6=el('td');const ro=el('div','big',r.reg_open?md(r.reg_open)+' '+r.reg_open.slice(11):r.reg_open_text);
-      if(s==='접수 예정')ro.classList.add('st-soon');if(s==='접수 중')ro.classList.add('st-open');c6.append(ro);
+      const c6=el('td','c-reg');c6.append(el('div','big',r.reg_open&&!r.open_now?md(r.reg_open)+' '+r.reg_open.slice(11):r.reg_open_text));
+      if(u==='hot'||u==='soon')c6.append(el('span','cdn '+(u==='hot'?'c-hot':'c-soon'),countdown(now,r.reg_open)));
       if(r.reg_open&&r.org==='KATO')c6.append(el('div','mu','선착순'));
-      const c7=el('td');c7.append(el('div',null,r.reg_close_text||'—'));if(r.refund)c7.append(el('div','mu','환불: '+r.refund));
+      const c7=el('td');c7.append(el('div',null,r.reg_close_text||'—'));
+      if(u==='close')c7.append(el('span','cdn c-close','마감 '+countdown(now,r.reg_close)));
+      if(r.refund)c7.append(el('div','mu','환불: '+r.refund));
       const c8=el('td');c8.append(el('div',null,r.apply),el('div','mu',r.fee||''));
       tr.append(c1,c2,c3,c4,c5,c6,c7,c8);return tr;}));
   }
@@ -262,21 +392,22 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
   function drawTimeline(rows,now){
     const t=now.slice(0,10),end=addDays(t,14)+'T23:59';const m=new Map();
     rows.forEach(r=>{
-      if(r.reg_open&&r.reg_open>=t&&r.reg_open<=end){const k='o|'+r.reg_open+'|'+r.tid;if(!m.has(k))m.set(k,{when:r.reg_open,kind:'오픈',cls:'open',r,divs:[]});m.get(k).divs.push(r.division);}
+      if(r.reg_open&&r.reg_open>=now&&r.reg_open<=end){const k='o|'+r.reg_open+'|'+r.tid;if(!m.has(k))m.set(k,{when:r.reg_open,kind:'오픈',cls:'open',r,divs:[]});m.get(k).divs.push(r.division);}
       if(r.reg_close&&r.reg_close>=now&&r.reg_close<=end){const k='c|'+r.reg_close+'|'+r.tid;if(!m.has(k))m.set(k,{when:r.reg_close,kind:'마감',cls:'close',r,divs:[]});m.get(k).divs.push(r.division);}
     });
     const ev=[...m.values()].sort((a,b)=>a.when.localeCompare(b.when));
     const box=document.getElementById('tl');
     if(!ev.length){box.replaceChildren(el('div','tc-empty','14일 안에 시각이 정해진 접수 일정이 없습니다.'));return;}
     const out=[];let day='';
-    ev.forEach(e=>{const d=e.when.slice(0,10);if(d!==day){day=d;out.push(el('div','day',md(d)+(d===t?' · 오늘':'')));}
-      const row=el('div','ev');const tm=e.when.slice(11);const who=el('div','who');const sw=el('span','tc-sw');sw.style.background=col(e.r.org);sw.style.marginRight='6px';
-      who.append(sw,e.r.org+' '+e.r.tournament,el('div','s',e.divs.join(', ')+' · '+e.r.apply));
+    ev.forEach(e=>{const d=e.when.slice(0,10);if(d!==day){day=d;out.push(el('div','day',md(d)+(d===t?' · 오늘':dayGap(t,d)===1?' · 내일':'')));}
+      const hot=hoursUntil(now,e.when)<=HOT_H;
+      const row=el('div','ev'+(hot?' hot '+(e.cls==='open'?'o':'c'):''));const tm=e.when.slice(11);const who=el('div','who');const sw=el('span','tc-sw');sw.style.background=col(e.r.org);sw.style.marginRight='6px';
+      who.append(sw,e.r.org+' '+e.r.tournament,el('div','s',e.divs.join(', ')+' · '+e.r.apply+(hot?' · '+countdown(now,e.when):'')));
       row.append(el('div','tm',tm==='23:59'?'종일':tm),el('div','k '+e.cls,'접수 '+e.kind),who);out.push(row);});
     box.replaceChildren(...out);
   }
 
-  function drawMatrix(now){
+  function drawMatrix(){
     const k=dash.data('by_level');const tb=document.querySelector('#mx tbody');
     if(k.status!=='ok'){tb.replaceChildren();return;}
     tb.replaceChildren(...k.data.map(o=>{const tr=el('tr');tr.dataset.key=o.level;tr.dataset.gender=o.gender;if(level===o.level)tr.className='on';
@@ -290,15 +421,18 @@ html,body{margin:0;background:var(--color-bg);color:var(--color-fg)}
     document.querySelectorAll('#kpis [data-field]').forEach(v=>{if(k.status==='ok'){v.classList.remove('dash-skeleton');v.textContent=String(k.data[0][v.dataset.field]);}});
     const mf=document.getElementById('mf');
     if(k.status==='ok'){const x=k.data[0];mf.classList.remove('dash-skeleton');mf.textContent=x.male+' · '+x.female;
-      document.getElementById('takeaway').textContent='지금 '+x.open+'개 부서가 접수 중입니다.'+(x.next_when?' 다음 접수 오픈은 '+md(x.next_when)+' '+x.next_when.slice(11)+' '+x.next_what+'.':'');}
-    drawMatrix(now);
+      document.getElementById('takeaway').textContent='지금 '+x.open+'개 부서가 접수 중입니다.'+(x.next_when?' 다음 접수 오픈은 '+md(x.next_when)+' '+x.next_when.slice(11)+' ('+countdown(now,x.next_when)+') '+x.next_what+'.':'');}
+    drawMatrix();
     const d=dash.data('divisions');
-    if(d.status!=='ok'){document.querySelector('#tbl tbody').replaceChildren();document.getElementById('tl').replaceChildren();document.getElementById('cnt').textContent=d.status==='error'?'불러오지 못했습니다':'';return;}
-    drawTable(d.data.filter(r=>pass(r,now,true)),now);
-    drawTimeline(d.data.filter(r=>pass(r,now,false)),now);
+    if(d.status!=='ok'){['#tbl tbody','#tl','#sp-soon','#sp-open'].forEach(s=>document.querySelector(s).replaceChildren());document.getElementById('cnt').textContent=d.status==='error'?'불러오지 못했습니다':'';return;}
+    const base=d.data.filter(passBase);
+    drawSpot(base,now);
+    drawTable(base.filter(r=>passQuick(r,now)),now);
+    drawTimeline(base,now);
   }
   dash.onData(draw);
+  setInterval(draw,60000);
   const named=document.getElementById(location.hash.slice(1));if(named)named.scrollIntoView();
 })();
 </script>
-<p class="tc-foot">자료: kato.kr · KTA 통합시스템(join.kortennis.or.kr) · kata-tennis.com · 베이스라인. 마지막 갱신 <span id="updated">—</span>. 접수 상태는 보는 시각(한국시간) 기준으로 자동 계산됩니다. 정확한 자격·일정은 반드시 각 요강을 확인하세요.</p></div></body></html>
+<p class="tc-foot">자료: kato.kr · KTA 통합시스템(join.kortennis.or.kr) · kata-tennis.com · 베이스라인. 마지막 갱신 <span id="updated">—</span>. 접수 상태와 남은 시간은 보는 시각(한국시간) 기준으로 1분마다 자동 계산됩니다. 정확한 자격·일정은 반드시 각 요강을 확인하세요.</p></div></body></html>
